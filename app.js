@@ -1,5 +1,6 @@
 const path = require('path')
 const express = require('express')
+const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 const connectDB = require('./config/db')
 const connect = require('mongoose')
@@ -7,6 +8,7 @@ const morgan = require('morgan')
 const exphbs = require('express-handlebars')
 const passport = require('passport')
 const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 
 //Load config
 dotenv.config({ path: './config/config.env' }) // put all of our global variables
@@ -34,7 +36,7 @@ app.use(
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false, //don't create a session untill its called
-    cookie: { secure: true },
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
 )
 
@@ -44,8 +46,10 @@ app.use(passport.session())
 
 // define folder as Static folder so files can be access from the client
 app.use(express.static(path.join(__dirname, '/public')))
+
 //Routes
 app.use('/', require('./routes/index'))
+app.use('/auth', require('./routes/auth'))
 
 const PORT = process.env.PORT || 5000 //.env access defined variables
 

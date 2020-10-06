@@ -12,10 +12,13 @@
 <body>
  <div class="container">
   {{!-- pushes everything to the middle  --}}
+  {{> _header}}
  {{{body}}}
 
  </div>
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- must initalise materials eleents for them to behave as want them to-->
+    <script>M.Sidenav.init(document.querySelector('.sidenav'))</script>
 </body>
 </html>
