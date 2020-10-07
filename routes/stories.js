@@ -32,7 +32,7 @@ router.get('/edit/:id', ensureAuth, async (req, res) => {
     return res.render('error/404')
   }
   if (story.user != req.user.id) {
-    res.redirect('stories')
+    res.redirect('/stories')
   } else {
     res.render('stories/edit', {
       story,
@@ -54,6 +54,24 @@ router.get('/', ensureAuth, async (req, res) => {
     })
   } catch (err) {
     console.error(err)
+  }
+})
+
+///@desc Update story
+//@route PUT /stories//:id
+router.put('/:id', ensureAuth, async (req, res) => {
+  let story = await Story.findById(req.params.id).lean()
+  if (!story) {
+    return res.render('error/404')
+  }
+  if (story.user != req.user.id) {
+    res.redirect('/stories')
+  } else {
+    story = await Story.findOneAndUpdate({ _id: req.params.id }, req.body, {
+      new: true, // creates a new one if it doesn't exists
+      runValidators: true, // checks that mongoose fields are valid
+    })
+    res.redirect('/dashboard')
   }
 })
 
