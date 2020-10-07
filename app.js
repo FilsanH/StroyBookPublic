@@ -83,7 +83,7 @@ app.use(function (req, res, next) {
   next()
 })
 // define folder as Static folder so files can be access from the client
-app.use(express.static(path.join(__dirname, '/public')))
+app.use(express.static(path.join(__dirname, '/public/')))
 
 //Routes
 app.use('/', require('./routes/index'))
