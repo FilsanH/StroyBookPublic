@@ -20,7 +20,6 @@ router.get('/', ensureGuest, (req, res) => {
 router.get('/dashboard', ensureAuth, async (req, res) => {
   try {
     const stories = await Story.find({ user: req.user.id }).lean() // returns a javascript object rather than a mongoose
-    console.log(stories)
     res.render('dashboard', {
       name: req.user.firstName,
       stories,

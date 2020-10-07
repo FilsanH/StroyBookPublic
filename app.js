@@ -29,11 +29,21 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 //Handlebars Helpers
-const { formatDate } = require('./helpers/hbs')
+const {
+  formatDate,
+  stripTags,
+  truncate,
+  editIcon,
+  select,
+} = require('./helpers/hbs')
 // Handlebars
 app.engine(
   '.hbs',
-  exphbs({ helpers: { formatDate }, defaultLayout: 'main', extname: '.hbs' })
+  exphbs({
+    helpers: { formatDate, stripTags, truncate, editIcon, select },
+    defaultLayout: 'main',
+    extname: '.hbs',
+  })
 )
 app.set('view engine', '.hbs')
 // layouts works by inputing 'views' files into the body of layout
@@ -52,6 +62,13 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session())
 
+// Set globar var  now can access user from global variables
+//not sure don't really understand
+app.use(function (req, res, next) {
+  res.locals.user = req.user || null
+  //must call next
+  next()
+})
 // define folder as Static folder so files can be access from the client
 app.use(express.static(path.join(__dirname, '/public')))
 
