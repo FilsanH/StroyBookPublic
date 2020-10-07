@@ -20,6 +20,9 @@ connectDB()
 
 const app = express()
 
+//Body Parser to accept form data from reqbody
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 //logging
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev')) //https request looger middleware
@@ -50,6 +53,7 @@ app.use(express.static(path.join(__dirname, '/public')))
 //Routes
 app.use('/', require('./routes/index'))
 app.use('/auth', require('./routes/auth'))
+app.use('/stories', require('./routes/stories'))
 
 const PORT = process.env.PORT || 5000 //.env access defined variables
 
